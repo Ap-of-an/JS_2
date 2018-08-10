@@ -17,9 +17,6 @@ Container.prototype.remove = function () {
       this[key] = "";
     }
   }
-  
- 
-   
 }
 
 function Menu(my_id, my_class, my_items) {
@@ -110,84 +107,143 @@ var div = document.write(bigMenu.render());
 
 
 
- /**
-  * Класс, объекты которого описывают параметры гамбургера. 
-  * 
-  * @constructor
-  * @param size        Размер
-  * @param stuffing    Начинка {}
-  * @throws {HamburgerException}  При неправильном использовании
-  */
- function Hamburger(size, stuffing) { 
-   this.price = size.price;
-   this.calories = size.calories;
-   this.stuf_price = stuffing.price;
-   this.stuf_cal = stuffing.calories;
-   this.topping = [{name_topping: "", pc: new pr_cal(0, 0)}, {name_topping: "", pc: new pr_cal(0, 0)}];
- }
- function pr_cal(price, calories, name) {
-   this.price = price;
-   this.calories = calories;
-   this.name = name;
- }
- /* Размеры, виды начинок и добавок */
-   Hamburger.SIZE_SMALL = new pr_cal(50, 20);
-   Hamburger.SIZE_LARGE = new pr_cal(100, 40);
-   Hamburger.STUFFING_CHEESE = new pr_cal(10, 20);
-   Hamburger.STUFFING_SALAD = new pr_cal(20, 5);
-   Hamburger.STUFFING_POTATO = new pr_cal(15, 10);
-   Hamburger.TOPPING_MAYO = new pr_cal(15, 0);
-   Hamburger.TOPPING_SPICE = new pr_cal(20, 5);
-   /**
-    * Добавить добавку к гамбургеру. Можно добавить несколько
-    * добавок, при условии, что они разные.
-    * 
-    * @param topping     Тип добавки
-    * @throws {HamburgerException}  При неправильном использовании
-    */
-   Hamburger.prototype.addTopping = function (name, topping) {
-    this.topping.push(topping);
-    topping.
-   }
-   /**
-    * Убрать добавку, при условии, что она ранее была 
-    * добавлена.
-    * 
-    * @param topping   Тип добавки
-    * @throws {HamburgerException}  При неправильном использовании
-    */
-   Hamburger.prototype.removeTopping = function (topping) {
+/* Доделал третье задание */
 
-   }
-   /**
-    * Получить список добавок.
-    *
-    * @return {Array} Массив добавленных добавок, содержит константы
-    *                 Hamburger.TOPPING_*
-    */
-   Hamburger.prototype.getToppings = function ()...
-   /**
-    * Узнать размер гамбургера
-    */
-   Hamburger.prototype.getSize = function ()...
-   /**
-    * Узнать начинку гамбургера
-    */
-   Hamburger.prototype.getStuffing = function ()...
-   /**
-    * Узнать цену гамбургера
-    * @return {Number} Цена в тугриках
-    */
-   Hamburger.prototype.calculatePrice = function ()...
-   /**
-    * Узнать калорийность
-    * @return {Number} Калорийность в калориях
-    */
-   Hamburger.prototype.calculateCalories = function ()...
-   /**
-    * Представляет информацию об ошибке в ходе работы с гамбургером. 
-    * Подробности хранятся в свойстве message.
-    * @constructor 
-    */
-   function HamburgerException(...) { ...
-   }
+/**
+ * Класс, объекты которого описывают параметры гамбургера. 
+ * 
+ * @constructor
+ * @param size        Размер
+ * @param stuffing    Начинка {}
+ * @throws {HamburgerException}  При неправильном использовании
+ */
+function Hamburger(size, stuffing) {
+  try {
+    if (!(size instanceof list_chr) || !(stuffing instanceof list_chr)) {
+      throw error;
+    }
+    if (size.price < 0 || size.calories < 0 || stuffing.price < 0 || stuffing.calories < 0)
+      throw HamburgerException;
+    this.size = size;
+    this.stuffing = stuffing;
+    this.toppings = [];
+  } catch (error) {
+   error.show_error();
+  }
+}
+
+function list_chr(name, price, calories) {
+  this.name = name;
+  this.price = price;
+  this.calories = calories;
+}
+/* Размеры, виды начинок и добавок */
+Hamburger.SIZE_SMALL = new list_chr("small", 50, 20);
+Hamburger.SIZE_LARGE = new list_chr("large", 100, 40);
+Hamburger.STUFFING_CHEESE = new list_chr("cheese", 10, 20);
+Hamburger.STUFFING_SALAD = new list_chr("salad", 20, 5);
+Hamburger.STUFFING_POTATO = new list_chr("potato", 15, 10);
+Hamburger.TOPPING_MAYO = new list_chr("mayo", 20, 5);
+Hamburger.TOPPING_SPICE = new list_chr("spice", 15, 0);
+/**
+ * Добавить добавку к гамбургеру. Можно добавить несколько
+ * добавок, при условии, что они разные.
+ * 
+ * @param topping     Тип добавки
+ * @throws {HamburgerException}  При неправильном использовании
+ */
+Hamburger.prototype.addTopping = function (topping) {
+  let flag = false;
+  this.toppings.forEach(element => {
+    if(element.name == topping.name) {
+      flag = true;
+    }
+  });
+  if(!flag) {
+    this.toppings.push(topping);
+  }
+}
+let b = new Hamburger(Hamburger.SIZE_LARGE, Hamburger.STUFFING_CHEESE);
+b.addTopping(Hamburger.TOPPING_MAYO);
+b.addTopping(Hamburger.TOPPING_MAYO);
+b.addTopping(Hamburger.TOPPING_SPICE);
+/**
+ * Убрать добавку, при условии, что она ранее была 
+ * добавлена.
+ * 
+ * @param topping   Тип добавки
+ * @throws {HamburgerException}  При неправильном использовании
+ */
+Hamburger.prototype.removeTopping = function (topping) {
+  for (const i in this.toppings) {
+    if(this.toppings[i].name == topping.name) {
+      if(this.toppings.length == 1) {
+        this.toppings.pop();
+        return;
+      }
+      this.toppings.splice(i, 1, this.toppings.pop());
+    }
+  }
+}
+// b.removeTopping(Hamburger.TOPPING_MAYO);
+// b.removeTopping(Hamburger.TOPPING_SPICE);
+// b.removeTopping(Hamburger.TOPPING_SPICE);
+/**
+ * Получить список добавок.
+ *
+ * @return {Array} Массив добавленных добавок, содержит константы
+ *                 Hamburger.TOPPING_*
+ */
+Hamburger.prototype.getToppings = function () {
+  if(!this.toppings.length) {
+    return "Добавок нет";
+  }
+  return this.toppings;
+}
+/**
+ * Узнать размер гамбургера
+ */
+Hamburger.prototype.getSize = function () {
+  return this.size.name;
+}
+/**
+ * Узнать начинку гамбургера
+ */
+Hamburger.prototype.getStuffing = function () {
+  return this.stuffing.name;
+}
+/**
+ * Узнать цену гамбургера
+ * @return {Number} Цена в тугриках
+ */
+Hamburger.prototype.calculatePrice = function () {
+  let price = this.size.price + this.stuffing.price;
+  this.toppings.forEach(el => {
+    price += el.price;
+  });
+  return price;
+}
+/**
+ * Узнать калорийность
+ * @return {Number} Калорийность в калориях
+ */
+Hamburger.prototype.calculateCalories = function () {
+  let calories = this.size.calories + this.stuffing.calories;
+  this.toppings.forEach(el => {
+    calories += el.calories;
+  });
+  return calories;
+}
+/**
+ * Представляет информацию об ошибке в ходе работы с гамбургером. 
+ * Подробности хранятся в свойстве message.
+ * @constructor 
+ */
+function HamburgerException() {
+  this.message = "Неверные входные данные";
+}
+HamburgerException.prototype.show_error = function() {
+  console.log(this.message);  
+}
+/* объект ошибок */
+var error = new HamburgerException();
