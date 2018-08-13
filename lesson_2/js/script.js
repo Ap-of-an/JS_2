@@ -12,28 +12,31 @@ function App() {
    * Получение последнего сообщения
    */
   this.getLastMes = () => {
-     fetch(`${this.baseURL}/getMessage`, {
+    fetch(`${this.baseURL}/getMessage`, {
       method: 'GET'
-    }).then((waaaath_is_this) => {
-      return waaaath_is_this.text();
-    }).then((abra_cadabra) => {
-      this.lastMessage = abra_cadabra;     
+    }).then((body) => {
+      return body.text();
+    }).then((mes) => {
+      btn_1.querySelector("#btn_lastMessage + p").innerText = mes;
     }).catch(err => {
-      console.log("Ошибка:", err);      
+      console.log("Ошибка:", err);
     });
-    
+
   }
   /**
    * Отправить сообщение на сервер
    */
-  this.sendMessage = () => {
+  this.sendMessage = (text) => {
     fetch(`${this.baseURL}/sendMessage`, {
       method: 'POST',
-      body: "EyeLeo"
-    }).then(() => {
-       
+      body: text
+    }).then((answer) => {
+      input_2.value = "";
+      return answer.text();
+    }).then((answer) => {
+      console.log(answer);
     }).catch(err => {
-      console.log("Ошибка:", err);      
+      console.log("Ошибка:", err);
     });
   }
   /**
@@ -43,51 +46,92 @@ function App() {
     fetch(`${this.baseURL}/user`, {
       method: 'GET'
     }).then((list_users) => {
-       return list_users.json();
+      return list_users.json();
     }).then((list) => {
       this.array_users = list;
     }).catch(err => {
-      console.log("Ошибка:", err);      
-    }); 
+      console.log("Ошибка:", err);
+    });
   }
   this.getUserByNumber = (number) => {
-   try {
-    if(!(number instanceof Number)) {
-      throw new Error("Номер пользователя может быть только числом");
+    try {
+      if (typeof number != "number") {
+        throw new Error("Номер пользователя может быть только числом");
+      }
+      this.num_user = number;
+    } catch (er) {
+      console.log(er);
+      return;
     }
-    this.num_user = number;
-    
-   } catch (er) {
-     console.log(er);
-   }
-    fetch(`${this.baseURL}/user/${number}`,{
+    fetch(`${this.baseURL}/user/${number}`, {
       method: "GET"
     }).then(body => {
       return body.json();
     }).then(user => {
+      let i = 0;
+      for (const key in user) {
+        if (user.hasOwnProperty(key)) {
+          if (key == "name" || key == "email" || key == "age") {
+            i++;
+          }
+        }
+      }
+      if (i != 3) {
+        console.log("Неверный формат данных с сервера");
+        return;
+      }
       user = JSON.stringify(user);
-      console.log(`Данные пользователя №${this.num_user}: ${user}`);      
+      console.log(`Данные пользователя №${this.num_user}: ${user}`);
     }).catch(err => {
-
+      console.log(err);
     });
+  }
+  this.addUser = (obj) => {
+    const body = JSON.stringify(obj);
+    fetch(`${this.baseURL}/user/`, {
+      method: 'POST',
+      body: body,
+      credentials: 'include'
+    }).then((an) => {
+      return an.json();
+    }).then((an) => {
+      console.log(an);
+    }).catch((err) => {
+      console.log(err);
+    })
   }
 }
 
 
+let btn_1 = document.querySelector("#btn_lastMessage");
+btn_1.addEventListener("click", function () {
+  a.getLastMes();
+})
+let bnt_2 = document.querySelector("#btn_sendMessage");
+let input_2 = document.querySelector("#sendMes");
+bnt_2.addEventListener("click", function() {
+  a.sendMessage(input_2.value);
+})
+
 
 var a = new App();
-//  a.getLastMes();
-//  console.log(a.lastMessage);
-//  setTimeout(() => {
-//    console.log(a.lastMessage);
-//  }, 500);
-//  // a.sendMessage();
+// a.getLastMes();
+// console.log(a.lastMessage);
+// setTimeout(() => {
+//   console.log(a.lastMessage);
+// }, 500);
+//  a.sendMessage();
 //  a.getUsers();
 //  console.log(a.array_users);
 //  setTimeout(() => {
 //   a.array_users.forEach(elem => {console.log(elem)});
 //  }, 500);
-// a.getUserByNumber(1);
+//  a.getUserByNumber(1);
+// let new_user = {name:"Vlad",email:"vlad@yandex.ru",age:18};
+// a.addUser(new_user);
+
+
+
 
 
 
