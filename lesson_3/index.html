@@ -5,8 +5,35 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document</title>
+
+  <style>
+    input:invalid:not(:placeholder-shown) {
+      outline: 1px solid red;
+    }
+    input:valid:not(:placeholder-shown) {
+      outline: 1px solid green;
+    }
+    input[type=submit] {
+      outline: none !important;
+    }
+  </style>
 </head>
 <body>
+  <h2>Задание 1, 2</h2>
+  <div id="z1_2"></div>
+  
+  <h2>Задание 3</h2>
+  <form action="#" method="post" id="form">
+    <label for="name">Введите ваше имя:</label>
+    <input required type="text" name="name" id="name" placeholder="Иван" minlength="1" maxlength="40" pattern="[А-ЯЁа-яё\w]+"><br>
+    <label for="tel">Введите ваш номер телефона:</label>
+    <input required type="tel" name="tel" id="tel" placeholder="+7(000)000-0000" pattern="[+]7[(]\d{3}[)]\d{3}[-]\d{4}" minlength="15" maxlength="15"><br>
+    <label for="email">Введите ваш email:</label>
+    <input required type="email" name="email" id="email" placeholder="my.mail@mail.ru"><br>
+    <label for="text">Введите ваше сообщение:</label>
+    <input required type="text" name="text" id="text" placeholder="some text..." width="300" height="20"><br>
+    <input type="submit" value="Отправить" id="submit">
+  </form>
   
   <script src="script.js"></script>
 </body>
