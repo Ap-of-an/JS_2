@@ -1,40 +1,181 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document</title>
-
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
   <style>
-    input:invalid:not(:placeholder-shown) {
-      outline: 1px solid red;
+    * {
+      box-sizing: border-box;
     }
-    input:valid:not(:placeholder-shown) {
-      outline: 1px solid green;
+
+    .jq-tabs {
+      margin: 0 auto;
+      outline: 1px solid #e6e4e4;
+      padding: 10px;
+      width: 900px;
     }
-    input[type=submit] {
-      outline: none !important;
+
+    .tabs {
+      margin-bottom: 0;
+    }
+
+    .tabs,
+    .pages-tabs {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    .tabs li {
+      color: rgb(247, 243, 211);
+      cursor: pointer;
+      font-size: 18px;
+      padding: 10px 20px;
+      border: 2px solid burlywood;
+      border-bottom: none !important;
+      border-radius: 4px 4px 0 0;
+      background-color: rgb(134, 134, 134);
+    }
+
+    .tabs li:last-child {
+      margin-right: 0;
+    }
+
+    .tabs li:hover {
+      background-color: rgb(170, 170, 170);
+    }
+
+    .tabs li.active {
+      border-bottom: none;
+      /* margin-bottom: -2px;  */
+      z-index: 1;
+      position: relative;
+    }
+
+    .tabs li.active::after {
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      content: "";
+      display: block;
+      width: 100%;
+      height: 2px;
+      background-color: #fff;
+    }
+
+    .pages-tabs {
+      margin-top: 0;
+      padding: 20px 10px;
+      border: 2px solid burlywood;
+    }
+
+    .pages-tabs li {
+      display: none;
+      width: 100%;
+    }
+
+    .pages-tabs li.active {
+      display: block !important;
+    }
+
+    ul {
+      list-style: none;
+      padding-left: 0;
+    }
+    .wr-city {
+      position: relative;
+      display: inline-block;
+     
+    }
+    .list {
+      display: none;
+      border: 1px solid rgb(190, 190, 190);
+      padding-left: 0;
+      list-style: none;
+      margin: 0;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 100%;
+      z-index: 1;
+      background-color: #fff;
+      box-shadow: 0 0 3px #ccc;
+    }
+    .list.active {
+      display: block;
+    }
+    .list li {
+      padding-left: 5px;
+      cursor: pointer;
+    }
+    .list li:hover {
+      background-color: #d4d4d4;
     }
   </style>
 </head>
+
 <body>
-  <h2>Задание 1, 2</h2>
-  <div id="z1_2"></div>
-  
-  <h2>Задание 3</h2>
+  <div class="jq-tabs">
+    <ul class="tabs">
+      <li class="active">Вкладка_1</li>
+      <li>Вкладка_2</li>
+      <li>Вкладка_3</li>
+      <li>Вкладка_4</li>
+      <li>Вкладка_5</li>
+    </ul>
+    <ul class="pages-tabs">
+      <li class="active">1 Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus doloremque alias, atque nemo nobis reiciendis
+        neque aliquid maiores excepturi necessitatibus.</li>
+      <li>2 Lorem ipsum dolor Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio, quidem? sit amet consectetur adipisicing
+        elit. Doloribus doloremque alias, atque nemo nobis reiciendis neque aliquid maiores excepturi necessitatibus.</li>
+      <li>3 Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus doloremque alias, atque nemo nobis reiciendis
+        neque aliquid maiores excepturi necessitatibus.</li>
+      <li>4 Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus Lorem ipsum dolor sit amet, consectetur adipisicing
+        elit. Placeat mollitia, porro molestias sunt quod, inventore at omnis quasi voluptas explicabo temporibus nemo? Dolorem,
+        quaerat hic facere ipsum laborum deserunt distinctio? doloremque alias, atque nemo nobis reiciendis neque aliquid
+        maiores excepturi necessitatibus.</li>
+      <li>5 Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus doloremque alias, atque nemo nobis reiciendis
+        neque aliquid maiores excepturi necessitatibus.</li>
+    </ul>
+  </div>
+  <br>
+  <br>
+  <br>
+  <hr>
   <form action="#" method="post" id="form">
     <label for="name">Введите ваше имя:</label>
-    <input required type="text" name="name" id="name" placeholder="Иван" minlength="1" maxlength="40" pattern="[А-ЯЁа-яё\w]+"><br>
+    <input required type="text" name="name" id="name" placeholder="Иван" minlength="1" maxlength="40" pattern="[А-ЯЁа-яё\w]+">
+    <br>
+    <br>
     <label for="tel">Введите ваш номер телефона:</label>
-    <input required type="tel" name="tel" id="tel" placeholder="+7(000)000-0000" pattern="[+]7[(]\d{3}[)]\d{3}[-]\d{4}" minlength="15" maxlength="15"><br>
+    <input required type="tel" name="tel" id="tel" placeholder="+7(000)000-0000" pattern="[+]7[(]\d{3}[)]\d{3}[-]\d{4}" minlength="15"
+      maxlength="15">
+    <br>
+    <br>
     <label for="email">Введите ваш email:</label>
-    <input required type="email" name="email" id="email" placeholder="my.mail@mail.ru"><br>
+    <input required type="email" name="email" id="email" placeholder="my.mail@mail.ru">
+    <br>
+    <br>
+    <label for="city">Введите город обращения:</label>
+    <div class="wr-city" id="wr-city">
+      <input type="text" name="city" id="city" class="city">
+    </div>
+    <br>
+    <br>
     <label for="text">Введите ваше сообщение:</label>
-    <input required type="text" name="text" id="text" placeholder="some text..." width="300" height="20"><br>
+    <input required type="text" name="text" id="text" placeholder="some text..." width="300" height="20">
+    <br>
+    <br>
     <input type="submit" value="Отправить" id="submit">
+
+
   </form>
-  
+
   <script src="script.js"></script>
 </body>
+
 </html>
