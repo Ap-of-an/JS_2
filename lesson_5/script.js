@@ -4,7 +4,7 @@ class Cart {
   
   constructor() {
     $.ajax({
-      url: `${BASE_URL}/shop`,
+      url: `${BASE_URL}/shop?user_id=_xutvksap8`,
       type: "GET",
       success: (data) => {
         this.user_id = data.user_id;
@@ -67,24 +67,55 @@ class Comments {
       }
     });
   }
+  likeComment(com_id) {
+    $.ajax({
+      url: `${BASE_URL}/comment_id=${com_id}`,
+      type: "PATCH",
+      success: (data) => {
+        this.comments.forEach((el) =>{
+          if(el.comment_id == com_id) {
+            el = data;
+            return;
+          }
+        })        
+      },
+      error: function (err) {
+        console.error(err);
+      }
+    });
+  }
+
+  removeComment(com_id) {
+    $.ajax({
+      url: `${BASE_URL}/comment_id=${com_id}`,
+      type: "DELETE",
+      success: (data) => {
+      },
+      error: function (err) {
+        console.error(err);
+      }
+    });
+  }
 }
 
-
-//let cart = new Cart();
-
-
+let cart = new Cart();
 
 
 $(".buy").on("click", function() {
   $(this).addClass("buy-done");
-  $(this).siblings(".remove").addClass("d-b");   
-
+  $(this).siblings(".remove").addClass("d-b");
     $(this).siblings(".remove").addClass("remove-done");
-
   setTimeout(() => {
     $(this).addClass("d-n");
   }, parseFloat($(this).css("transition-duration"))*1000);
-})
+
+  let price = $(this).parents(".price-btns").find(".price").text();
+  let prod= $(this).parents(".product").find(".name").text();
+  console.log(prod, price);
+  cart.add_product(prod, price);
+});
+
+
 $(".remove").on("click", function() {
   $(this).toggleClass("remove-done");
   $(this).siblings(".buy").removeClass("d-n");
@@ -92,5 +123,17 @@ $(".remove").on("click", function() {
   setTimeout(() => {
     $(this).removeClass("d-b");    
   }, parseFloat($(this).css("transition-duration"))*1000);
-})
+
+  let prod= $(this).parents(".product").find(".name").text();
+  let prod_id = "";
+  cart.cart.forEach((el) => {
+    if(el.product == prod) {
+      prod_id = el.product_id;
+      return;
+    }
+  });
+  if(prod_id != "") {
+    cart.del_product(prod_id);
+  }
+});
 
