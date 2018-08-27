@@ -25,8 +25,11 @@ class Cart {
     return result;
   }
   update_cart() {
+    let this_ = this;
+   setTimeout(function(){
     $("#number_tov").text(`${cart.cart.length}`);
-    $("#stoimost").text(`${this.all_price()}`);
+    $("#stoimost").text(`${this_.all_price()}`);
+   }, 200);
   }
   add_product(product, price) {
     $.ajax({
@@ -167,6 +170,7 @@ $(".basket").droppable({
   drop: function (event, ui) {
     cart.add_product(ui.draggable.find(".name").text(), ui.draggable.find(".price").text());
     cart.update_cart();
+    ui.draggable.find(".buy").click();
   },
 
 });
@@ -181,7 +185,3 @@ $(".product").draggable({
   cursor: "move"
 
 });
-
-setTimeout(function () {
-
-}, 200);
